@@ -5,9 +5,9 @@ INCLUDEPATH += src src/json src/qt
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-lessThan(QT_MAJOR_VERSION, 5): CONFIG += static
-QMAKE_CXXFLAGS = -fpermissive
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+#lessThan(QT_MAJOR_VERSION, 5): CONFIG += static
+#QMAKE_CXXFLAGS = -fpermissive
 
 greaterThan(QT_MAJOR_VERSION, 4) {
     QT += widgets
@@ -44,7 +44,12 @@ UI_DIR = build
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
     # Mac: compile for maximum compatibility (10.5, 32-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.5 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.5.sdk
+#    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.5 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.5.sdk
+    SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
+    # Mac: compile for maximum compatibility (10.7, 32-bit)
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7  -isysroot $$SDK
+    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.7  -isysroot $$SDK
+    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.7 $$SDK
 
     !windows:!macx {
         # Linux: static link
@@ -116,7 +121,7 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
 SOURCES += src/txdb-leveldb.cpp \
-    src/bloom.cpp \
+#    src/bloom.cpp \
     src/hash.cpp \
     src/aes_helper.c \
     src/blake.c \
